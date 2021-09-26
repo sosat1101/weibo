@@ -13,9 +13,6 @@ class SessionController extends Controller
 
     public function store(Request $request)
     {
-
-
-
         $credentials = $this->validate($request, [
             'email' => 'required|email|max:255',
             'password' => 'required'
@@ -33,6 +30,8 @@ class SessionController extends Controller
 
     public function destroy()
     {
-
+        Auth::logout();
+        session()->flash('success', '退出chenggong');
+        return redirect()->route('login');
     }
 }

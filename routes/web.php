@@ -14,9 +14,9 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::get('/',[StaticPagesController::class, 'home']);
+Route::get('/',[StaticPagesController::class, 'home'])->name('home');
 
-Route::get('/help',[StaticPagesController::class, 'help']);
+Route::get('/help',[StaticPagesController::class, 'help'])->name('help');
 
 Route::get('/about',[StaticPagesController::class, 'about']);
 
