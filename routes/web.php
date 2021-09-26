@@ -21,3 +21,9 @@ Route::get('/help',[StaticPagesController::class, 'help']);
 Route::get('/about',[StaticPagesController::class, 'about']);
 
 Route::resource('users','UserController');
+
+Route::get('login',[\App\Http\Controllers\SessionController::class,'create'])->name('login');
+
+Route::post('login',[\App\Http\Controllers\SessionController::class,'store'])->name('login');
+
+Route::delete('logout',[\App\Http\Controllers\SessionController::class,'destroy'])->name('logout');
