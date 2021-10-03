@@ -39,7 +39,7 @@ class UserController extends Controller
 
         Auth::login($user);
         session()->flash('success', '欢迎，您将在这里开启一段新的旅程~');
-        return redirect()->route('users.show',[$user]);
+        return redirect()->route('users.show', [$user]);
     }
 
     public function destroy()
@@ -47,8 +47,30 @@ class UserController extends Controller
 
     }
 
-    public function update()
+    public function update(Request $request, User $user)
     {
+        $validateData = $request->validate([
+            'name' => 'required|unique:users|max:50',
+            'password' => 'nullable|confirmed|min:6',
+        ]);
 
+        if ($validateData['password'] && $validateData['name']) {
+            $user->update([
+                'name' => $request->input('name'),
+                'password' => bcrypt($request->input('password'))
+            ]);
+        } else if ($validateData['name'] && empty($validateData['password'])) {
+            $user->update([
+                'name' => $request->input('name'),
+            ]);
+        }
+        session()->flash('success', '个人资料更新成功！');
+        return redirect()->route('users.show', $user->id);
+
+    }
+
+    public function edit(User $user)
+    {
+        return view('users.edit', compact('user'));
     }
 }
