@@ -8,9 +8,15 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    public function index()
+    public function __construct()
     {
+        $this->middleware('auth', [
+           'except' => ['create', 'store']
+        ]);
 
+        $this->middleware('guest', [
+            'only' => ['create']
+        ]);
     }
 
     public function create()
@@ -20,12 +26,13 @@ class UserController extends Controller
 
     public function show(User $user)
     {
+        $this->authorize('show', $user);
         return view('users.show', compact('user'));
     }
 
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $validateData = $request->validate([
             'name' => 'required|unique:users|max:50',
             'email' => 'required|email|unique:users|max:255',
             'password' => 'required|confirmed|min:6'
@@ -49,6 +56,8 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
+        $this->authorize('update', $user);
+
         $validateData = $request->validate([
             'name' => 'required|unique:users|max:50',
             'password' => 'nullable|confirmed|min:6',
@@ -71,6 +80,8 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
+        $this->authorize('update', $user);
+
         return view('users.edit', compact('user'));
     }
 }
