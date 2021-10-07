@@ -55,9 +55,13 @@ class UserController extends Controller
         return redirect()->route('users.show', [$user]);
     }
 
-    public function destroy()
+    public function destroy(User $user)
     {
+        $this->authorize('destroy', $user);
 
+        $user->delete();
+        session()->flash('success', 'delete success');
+        return back();
     }
 
     public function update(Request $request, User $user)
