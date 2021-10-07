@@ -11,12 +11,18 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('auth', [
-           'except' => ['create', 'store']
+           'except' => ['index', 'show' ,'create', 'store']
         ]);
 
         $this->middleware('guest', [
             'only' => ['create']
         ]);
+    }
+
+    public function index()
+    {
+        $users = User::paginate(6);
+        return view('users.index', compact('users'));
     }
 
     public function create()
@@ -26,7 +32,7 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        $this->authorize('show', $user);
+//        $this->authorize('show', $user);
         return view('users.show', compact('user'));
     }
 
