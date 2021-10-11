@@ -27,3 +27,5 @@ Route::get('login',[\App\Http\Controllers\SessionController::class,'create'])->n
 Route::post('login',[\App\Http\Controllers\SessionController::class,'store'])->name('login');
 
 Route::delete('logout',[\App\Http\Controllers\SessionController::class,'destroy'])->name('logout');
+
+Route::get('signup/confirm/{token}', [\App\Http\Controllers\UserController::class, 'confirmEmail'])->name('confirm_email');
