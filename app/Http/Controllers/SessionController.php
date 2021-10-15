@@ -19,6 +19,9 @@ class SessionController extends Controller
         return view('session.create');
     }
 
+    /**
+     * @throws \Illuminate\Validation\ValidationException
+     */
     public function store(Request $request)
     {
         $credentials = $this->validate($request, [
