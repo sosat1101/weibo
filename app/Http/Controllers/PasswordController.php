@@ -14,6 +14,13 @@ use Illuminate\Support\Str;
 
 class PasswordController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('throttle:2,1', [
+            'only' => ['resetForm']
+        ]);
+    }
+
     public function resetForm()
     {
         return view('password.resetForm');
@@ -70,7 +77,7 @@ class PasswordController extends Controller
         }
 
         // 设置邮件的有效期 10 minutes
-        $expires = 60000 * 10;
+        $expires = 60 * 10;
 
         $record = DB::table('password_resets')->where('email', $email)->first();
         if ($record) {
@@ -79,10 +86,10 @@ class PasswordController extends Controller
                 return redirect()->back();
             }
 
-        if (!Hash::check($token, $record->token)) {
-            session()->flash('danger', 'token failed');
-            return redirect()->back();
-        }
+            if (!Hash::check($token, $record->token)) {
+                session()->flash('danger', 'token failed');
+                return redirect()->back();
+            }
             $user->update(['password' => bcrypt($request->password)]);
             session()->flash('success', '密码重置成功，请使用新密码登录');
             return redirect()->route('login');
