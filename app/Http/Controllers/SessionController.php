@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 class SessionController extends Controller
@@ -11,6 +12,9 @@ class SessionController extends Controller
         $this->middleware('guest', [
             'only' => ['create']
         ]);
+        $this->middleware('throttle:10,10',[
+            'only' => ['store']
+        ]);
     }
 
     public function create()
@@ -18,6 +22,9 @@ class SessionController extends Controller
         return view('session.create');
     }
 
+    /**
+     * @throws \Illuminate\Validation\ValidationException
+     */
     public function store(Request $request)
     {
         $credentials = $this->validate($request, [
@@ -26,9 +33,16 @@ class SessionController extends Controller
         ]);
 
         if (Auth::attempt($credentials, $request->has('remember'))) {
-            session()->flash('success', '欢迎回来！');
-            $fallback = route('users.show', Auth::user());
-            return redirect()->intended($fallback);
+            if (Auth::user()->activated) {
+                session()->flash('success', '欢迎回来！');
+                $fallback = route('users.show', Auth::user());
+                return redirect()->intended($fallback);
+            } else {
+                Auth::logout();
+                session()->flash('waring', '请完成邮箱激活');
+                return redirect('/');
+            }
+
         } else {
             session()->flash('danger', '很抱歉，您的邮箱和密码不匹配');
             return redirect()->back()->withInput();
