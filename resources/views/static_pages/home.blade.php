@@ -7,6 +7,9 @@
                 <section class="status_form">
                     @include('shared._status_form')
                 </section>
+                <h4>微博列表</h4>
+                <hr>
+                @include('shared._feed')
             </div>
             <aside class="col-md-4">
                 <section class="user_info">
@@ -24,7 +27,7 @@
                 一切，将从这里开始。
             </p>
             <p>
-                <a class="btn btn-lg btn-success" href="{{ route('users.create') }}" role="button">现在注册</a>
+                <a class="btn btn-lg btn-success" href="{{ route('user.create') }}" role="button">现在注册</a>
             </p>
         </div>
     @endif
