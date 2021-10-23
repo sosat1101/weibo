@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,7 +15,6 @@ class StaticPagesController extends Controller
             $feed_items = Auth::user()->feed()->paginate(30);
         }
         return view('static_pages/home', compact('feed_items'));
-
     }
 
     public function help()
