@@ -33,7 +33,10 @@ class UserPolicy
     {
 //        dd('currentid='.$currentUser->id.'----'.'id='.$user->id);
         return $currentUser->is_admin && $currentUser->id !== $user->id;
-
     }
 
+    public function follow(User $currentUser, User $user)
+    {
+        return $currentUser->id !== $user->id;
+    }
 }
