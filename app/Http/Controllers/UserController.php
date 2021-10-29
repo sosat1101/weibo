@@ -129,15 +129,15 @@ class UserController extends Controller
 
     public function following(User $user)
     {
-        $followings = $user->followings()->paginate(30);
+        $users = $user->followings()->paginate(30);
         $title = $user->name . '关注的人';
-        return view('users.show_follow', compact('followings', 'title'));
+        return view('users.show_follow', compact('users', 'title'));
     }
 
     public function follower(User $user)
     {
-        $followers = $user->followers()->paginate(30);
+        $users = $user->followers()->paginate(30);
         $title = $user->name . '的粉丝';
-        return view('users.show_follow', compact('followers', 'title'));
+        return view('users.show_follow', compact('users', 'title'));
     }
 }
