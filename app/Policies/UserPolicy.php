@@ -31,7 +31,6 @@ class UserPolicy
 
     public function destroy(User $currentUser, User $user)
     {
-//        dd('currentid='.$currentUser->id.'----'.'id='.$user->id);
         return $currentUser->is_admin && $currentUser->id !== $user->id;
     }
 

@@ -7,7 +7,7 @@
                 <button type="submit" class="btn btn-sm btn-outline-primary">Cancel Follow</button>
             </form>
         @else
-            <form action="{{ route('followers.store', $user_id) }}" method="POST">
+            <form action="{{ route('followers.store', $user->id) }}" method="POST">
                 @csrf
                 <button type="submit" class="btn btn-sm btn-primary">Follow</button>
             </form>
